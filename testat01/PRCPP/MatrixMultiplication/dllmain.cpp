@@ -22,15 +22,11 @@ void multiply(jdouble* pa, jdouble* pb, jdouble* pr,
     jint aRows, jint aCols, jint bCols) {
     for (size_t r = 0; r < aRows; r++) {
         for (size_t c = 0; c < bCols; c++) {
-
             // Resetting the sum for every [i][j].
             jdouble tmpSum = 0.0;
             for (size_t k = 0; k < aCols; k++) {
-                // *(pr + r * bCols + c) += *(pa + r * aCols + k) * *(pb + k * bCols + c);
-                // tmpSum += pa[r * aCols + k] * pb[k * bCols + c];
                 tmpSum += *(pa + r * aCols + k) * *(pb + k * bCols + c);
             }
-            // pr[r * bCols + c] = tmpSum;
             *(pr + r * bCols + c) = tmpSum;
         }
     }
@@ -62,8 +58,6 @@ JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_multiplyC(JNIEnv* env,
     if (isCopyA == JNI_TRUE)      { env->ReleaseDoubleArrayElements(aValues, pa, 0); }
     if (isCopyB == JNI_TRUE)      { env->ReleaseDoubleArrayElements(bValues, pb, 0); }
     if (isCopyResult == JNI_TRUE) { env->ReleaseDoubleArrayElements(result, pr, 0);  }
-
-    std::cout << "C++ segement ended." << std::endl;
 }
 
 
@@ -72,7 +66,7 @@ JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_powerC(JNIEnv* env, jo
     
     std::cout << "Entering powerC function, provided exponent i = " << i << std::endl;
     
-    jboolean isCopyInp;
+    jboolean isCopyInp;     // Are not null.
     jboolean isCopyResult;
 
     jsize result_length = env->GetArrayLength(inp);
@@ -85,24 +79,20 @@ JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_powerC(JNIEnv* env, jo
     jdouble* internal = new jdouble[result_length];
     for (int i = 0; i < result_length; i++) { internal[i] = pa[i]; }
 
-    for (int k=0; k < i; k++) {
+    int k = 0;
+    for (; k < i; k++) {
         multiply(pa, internal, pr, aRows, aRows, aRows);
-                
-        // for (double* pi = pr; pi < pr + result_length; pi++) { std::cout << "k = " << k << ", pi: " << *pi << std::endl; }
         std::swap(internal, pr);
     }
 
     env->SetDoubleArrayRegion(resultMatrix, 0, result_length, pr);
 
+    // If isCopyInp == JNI_TRUE -> then a copy is made.
     if (isCopyInp    == JNI_TRUE) { env->ReleaseDoubleArrayElements(inp, pa, 0);          }
     if (isCopyResult == JNI_TRUE) { env->ReleaseDoubleArrayElements(resultMatrix, pr, 0); }
 
     delete[] internal;
 }
-
-
-
-
 
 
 JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_iterateArrayC
