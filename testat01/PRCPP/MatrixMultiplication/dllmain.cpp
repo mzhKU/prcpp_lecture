@@ -25,7 +25,8 @@ void multiply(jdouble* pa, jdouble* pb, jdouble* pr,
             // Resetting the sum for every [i][j].
             jdouble tmpSum = 0.0;
             for (size_t k = 0; k < aCols; k++) {
-                tmpSum += *(pa + r * aCols + k) * *(pb + k * bCols + c);
+                // tmpSum += *(pa + r * aCols + k) * *(pb + k * bCols + c);  // Works for RefTests
+                tmpSum += *(pb + r * aCols + k) * *(pa + k * bCols + c); // Works for M93
             }
             *(pr + r * bCols + c) = tmpSum;
         }
@@ -63,9 +64,9 @@ JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_multiplyC(JNIEnv* env,
 
 JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_powerC(JNIEnv* env, jobject o,
     jdoubleArray inp, jdoubleArray resultMatrix, jint aRows, jint i) {
-    
+
     std::cout << "Entering powerC function, provided exponent i = " << i << std::endl;
-    
+
     jboolean isCopyInp;     // Are not null.
     jboolean isCopyResult;
 
@@ -75,12 +76,11 @@ JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_powerC(JNIEnv* env, jo
     jdouble* pa = env->GetDoubleArrayElements(inp, &isCopyInp);
     jdouble* pr = env->GetDoubleArrayElements(resultMatrix, &isCopyResult);
 
-    // Result array on heap
+    // Intermediate result accumulation array on heap
     jdouble* internal = new jdouble[result_length];
     for (int i = 0; i < result_length; i++) { internal[i] = pa[i]; }
 
-    int k = 0;
-    for (; k < i; k++) {
+    for (int k=0; k < i; k++) {
         multiply(pa, internal, pr, aRows, aRows, aRows);
         std::swap(internal, pr);
     }
