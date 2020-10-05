@@ -18,17 +18,20 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
     return TRUE;
 }
 
+
+
 void multiply(jdouble* pa, jdouble* pb, jdouble* pr,
     jint aRows, jint aCols, jint bCols) {
     for (size_t r = 0; r < aRows; r++) {
+        int rowSkipperA = r * aCols;
+        int rowSkipperB = r * bCols;
         for (size_t c = 0; c < bCols; c++) {
             // Resetting the sum for every [i][j].
             jdouble tmpSum = 0.0;
             for (size_t k = 0; k < aCols; k++) {
-                // tmpSum += *(pa + r * aCols + k) * *(pb + k * bCols + c);  // Works for RefTests
-                tmpSum += *(pb + r * aCols + k) * *(pa + k * bCols + c); // Works for M93
+                tmpSum += *(pa + rowSkipperA + k) * *(pb + k * bCols + c);
             }
-            *(pr + r * bCols + c) = tmpSum;
+            *(pr + rowSkipperB + c) = tmpSum;
         }
     }
 }
@@ -54,12 +57,12 @@ JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_multiplyC(JNIEnv* env,
 
     multiply(pa, pb, pr, aRows, aCols, bCols);
 
-    env->SetDoubleArrayRegion(result, 0, sizeResult, pr);
-
-    if (isCopyA == JNI_TRUE)      { env->ReleaseDoubleArrayElements(aValues, pa, 0); }
-    if (isCopyB == JNI_TRUE)      { env->ReleaseDoubleArrayElements(bValues, pb, 0); }
-    if (isCopyResult == JNI_TRUE) { env->ReleaseDoubleArrayElements(result, pr, 0);  }
+    // if (isCopyResult == JNI_TRUE) { env->ReleaseDoubleArrayElements(result, pr, 0);  }
+    env->ReleaseDoubleArrayElements(result, pr, 0);
 }
+
+
+
 
 
 JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_powerC(JNIEnv* env, jobject o,
@@ -76,23 +79,47 @@ JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_powerC(JNIEnv* env, jo
     jdouble* pa = env->GetDoubleArrayElements(inp, &isCopyInp);
     jdouble* pr = env->GetDoubleArrayElements(resultMatrix, &isCopyResult);
 
-    // Intermediate result accumulation array on heap
-    jdouble* internal = new jdouble[result_length];
-    for (int i = 0; i < result_length; i++) { internal[i] = pa[i]; }
+    jdouble* aggregation = new jdouble[result_length];
 
-    for (int k=0; k < i; k++) {
-        multiply(pa, internal, pr, aRows, aRows, aRows);
-        std::swap(internal, pr);
+    // Copy the arrays into native code.
+    int k = 0;
+    for (double* pi = pa; pi != pa + result_length; pi++) {
+        aggregation[k] = *pi;
+        k++;
     }
 
-    env->SetDoubleArrayRegion(resultMatrix, 0, result_length, pr);
+    // k starts with 1 because for POWER=2 only one multiplication is needed.
+    for (int POWER = 1; POWER < i; POWER++) {
+        std::cout << "POWER = " << POWER << std::endl;
+        // multiply(pa, aggregation, pr, aRows, aRows, aRows);
+        multiply(aggregation, pa, pr, aRows, aRows, aRows);
+        std::swap(aggregation, pr);
+    }
 
-    // If isCopyInp == JNI_TRUE -> then a copy is made.
-    if (isCopyInp    == JNI_TRUE) { env->ReleaseDoubleArrayElements(inp, pa, 0);          }
-    if (isCopyResult == JNI_TRUE) { env->ReleaseDoubleArrayElements(resultMatrix, pr, 0); }
+    std::swap(aggregation, pr); 
 
-    delete[] internal;
+    if (i % 2 != 0) {
+        std::swap(aggregation, pr);
+        for (int s = 0; s < result_length; s++) {
+            *(pr + s) = *(aggregation + s);
+        }
+    }
+    
+    /*
+    for (int s = 0; s < result_length; s++) {
+        std::cout << "  *(pr+" << s << ") = " << *(pr + s) << ", *(aggr+" << s << ") = " << *(aggregation + s) << std::endl;
+    }
+    */
+    
+    env->ReleaseDoubleArrayElements(resultMatrix, pr, 0);
+    delete[] aggregation;
 }
+
+
+
+
+
+
 
 
 JNIEXPORT void JNICALL Java_matrix_1multiplication_Matrix_iterateArrayC
