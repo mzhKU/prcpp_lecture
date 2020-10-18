@@ -68,7 +68,7 @@ public:
 		return os;
 	}
 	
-	Set& operator=(const Set&);
+	// Set& operator=(const Set&);
 	// ------------------------------------------------------
 
 
