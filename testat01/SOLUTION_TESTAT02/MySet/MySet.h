@@ -10,7 +10,8 @@ using namespace std;
 class Set {
 protected:
 	// Protected Data Structure (allows inheritance)
-	size_t m_size;
+	size_t m_capacity; // Maximal number of elements in Set
+	size_t m_size;   // Current number of elements in Set
 	const shared_ptr<int[]> m_values;
 
 	// 'capacity': maximal set size
@@ -20,7 +21,7 @@ protected:
 
 	int operator[](size_t i) const;
 	int& operator[](size_t i);
-
+	
 	Set merge(const Set& set) const;
 	Set difference(const Set& set) const;
 	Set intersection(const Set& set) const;
@@ -37,7 +38,7 @@ public:
 	Set(const Set& s);
 
 	// Type conversion constructor
-	Set(initializer_list<int> v);
+	Set(const initializer_list<int>& vs);
 
 	// Destructor
 	~Set();
@@ -53,9 +54,7 @@ public:
 	size_t size() const;
 
 	bool operator==(const Set& set) const {
-		return size() == set.size() &&
-			containsAll(set) &&
-			set.containsAll(*this);
+		return size() == set.size() && containsAll(set) && set.containsAll(*this);
 	}
 
 	// Ausgabe-Operator für Output-Streams (Inline-Implementation schon gegeben)
@@ -67,8 +66,6 @@ public:
 		os << "}";
 		return os;
 	}
-	
-	// Set& operator=(const Set&);
 	// ------------------------------------------------------
 
 
