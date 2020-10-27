@@ -24,7 +24,9 @@ protected:
 	
 	Set merge(const Set& set) const;
 	Set difference(const Set& set) const;
+	Set difference(Set&& set) const;
 	Set intersection(const Set& set) const;
+	Set intersection(Set&& set) const;
 
 public:
 
@@ -82,6 +84,26 @@ public:
 
 	static Set intersection(const Set& set1, const Set& set2) {
 		return set1.intersection(set2);
+	}
+
+	// Differenzmenge set1 \ set2
+	static Set difference(Set&& set1, const Set& set2) {
+		return set2.difference(move(set1));
+	}
+
+	static Set difference(Set&& set1, Set&& set2) {
+		return set2.difference(move(set1));
+	}
+
+	// Schnittmenge
+	static Set intersection(const Set& set1, Set&& set2) {
+		return set1.intersection(move(set2));
+	}
+	static Set intersection(Set&& set1, const Set& set2) {
+		return set2.intersection(move(set1));
+	}
+	static Set intersection(Set&& set1, Set&& set2) {
+		return set1.intersection(move(set2));
 	}
 	// ------------------------------------------------------
 };

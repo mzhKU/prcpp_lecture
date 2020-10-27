@@ -1,5 +1,4 @@
 // MySet.cpp : Defines the functions for the static library.
-//
 
 #include "MySet.h"
 #include <initializer_list>
@@ -22,19 +21,20 @@ Set::Set() :
 	cout << "Default constructor." << endl;
 }
 
-// 'capacity': maximal size
+// Protected constructor. 'capacity': maximal size
 Set::Set(size_t capacity) :
 	m_values{ make_unique<int[]>(capacity) },
 	m_size{ 0 },
 	m_capacity{ capacity }
 {
-	cout << "Private constructor." << endl;
+	cout << "Protected constructor." << endl;
 }
 
 // Flat copy constructor (Folie 4-23)
 Set::Set(const Set& templateSet) :
-	m_values{ templateSet.m_values },
-	m_size{   templateSet.m_size }
+	m_capacity{ templateSet.m_capacity },
+	m_size{ templateSet.m_size },
+	m_values{ templateSet.m_values }
 {
 	cout << "Copy constructor." << endl;
 }
@@ -47,7 +47,7 @@ Set::Set(const initializer_list<int>& vs) :
 	cout << "Initializer list." << endl;
 	for (auto& v : vs) {
 		if (!this->contains(v)) {
-			m_values[m_size] = v;
+			*(begin() + m_size) = v;
 			m_size++;
 		}
 	}
@@ -133,6 +133,7 @@ Set Set::merge(const Set& set) const {
 // 'this' is set2
 Set Set::difference(const Set& set) const
 {
+	cout << "Difference without move semantics." << endl;
 	size_t differenceCapacity = 0;
 	for (int i = 0; i < set.size(); i++) {
 		if (!this->contains(*(set.begin() + i))) {
@@ -142,8 +143,8 @@ Set Set::difference(const Set& set) const
 	Set difference(differenceCapacity);
 	size_t differenceIndex = 0;
 	for (int i = 0; i < set.size(); i++) {
-		if (!this->contains(*(set.begin() + i))) {
-			difference[differenceIndex] = *(set.begin() + i);
+		if (!this->contains(set[i])) {
+			difference[differenceIndex] = set[i];
 			differenceIndex++;
 			difference.m_size++;
 		}
@@ -171,5 +172,50 @@ Set Set::intersection(const Set& set) const
 		}
 	}
 	return result;
+}
+
+/*
+--------------------------------------------------
+LOGIC OF INTERSECTION
+--------------------------------------------------
+Given sets A and B:
+A      B                FOUND   SIZE(Intersection)
+--------------------------------------------------
+l      d, f, b, e, s    NO      0
+b      d, f, b, e, s    YES     1
+k      d, f, b, e, s    NO      1
+e      d, f, b, e, s    YES     2
+m      d, f, b, e, s    NO      2
+--------------------------------------------------
+*/
+Set Set::intersection(Set&& set) const {
+	if (set.m_values.use_count() == 1) {
+		size_t sizeIntersection = 0;
+		for (int i = 0; i < set.size(); i++) {
+			if (this->contains(set[i])) {
+				set[sizeIntersection] = set[i];
+				sizeIntersection++;
+			}
+		}
+		set.m_size = sizeIntersection;
+		return set;
+	}
+	// Other set object points on the array.
+	return intersection(set);
+}
+
+Set Set::difference(Set&& set) const {
+	if (set.m_values.use_count() == 1) {
+		size_t differenceSize = 0;
+		for (int i = 0; i < set.size(); i++) {
+			if (!this->contains(set[i])) {
+				set[differenceSize] = set[i];
+				differenceSize++;
+			}
+		}
+		set.m_size = differenceSize;
+		return set;
+	}
+	return difference(set);
 }
 // ----------------------------------------------------------
