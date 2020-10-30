@@ -91,7 +91,7 @@ Set OrderedSet::merge(const Set& set) const
 		lowerA = this.getSmaller(B.begin())
 		Merge = lowerA U B
 		*/
-		return getSmaller(*(os->begin())).merge(*os);
+		return Set::merge(getSmaller(*(os->begin())), *os);
 	}
 	catch (bad_cast& e) {
 		// If we are here, the typecast was invalid
