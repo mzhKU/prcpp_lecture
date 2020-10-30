@@ -30,7 +30,8 @@ Set::Set(size_t capacity) :
 	cout << "Protected constructor." << endl;
 }
 
-// Flat copy constructor (Folie 4-23)
+// Flat copy constructor (Folie 4-23), i.e. it only
+// copies the pointer to the array
 Set::Set(const Set& templateSet) :
 	m_capacity{ templateSet.m_capacity },
 	m_size{ templateSet.m_size },
@@ -51,6 +52,17 @@ Set::Set(const initializer_list<int>& vs) :
 			m_size++;
 		}
 	}
+}
+
+Set::Set(const int* fromHere, size_t size) :
+	Set(size)
+{
+	for (auto i = 0; i < size; i++) {
+		if (!contains(fromHere[i])) {
+			m_values[m_size++] = fromHere[i];
+		}
+	}
+	cout << "ctor with size" << endl;
 }
 
 // Destructor

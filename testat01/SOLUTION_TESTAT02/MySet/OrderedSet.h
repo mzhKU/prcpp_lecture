@@ -21,8 +21,8 @@ public:
 	// Type conversion constructor
 	OrderedSet(const initializer_list<int>& vs);
 
-	// Values 
-	OrderedSet(const int* vs, size_t size);
+	// Adjusted set (larger, smaller)
+	OrderedSet(int* fromHere, size_t size);
 
 	// Destructor
 	~OrderedSet();

@@ -10,7 +10,7 @@ int* OrderedSet::begin() const
 	return Set::begin() + m_start;
 }
 
-OrderedSet::OrderedSet() : 
+OrderedSet::OrderedSet() :
 	// Set(), <- implicit
 	m_start{ 0 }
 {
@@ -18,7 +18,7 @@ OrderedSet::OrderedSet() :
 
 OrderedSet::OrderedSet(const OrderedSet& s) :
 	Set::Set(s),
-	m_start{ m_start }
+	m_start{ 0 }
 {
 }
 
@@ -30,8 +30,8 @@ OrderedSet::OrderedSet(const initializer_list<int>& vs) :
 	std::sort(beg, beg + m_size);
 }
 
-OrderedSet::OrderedSet(const int* vs, size_t size) :
-	Set::Set(vs, size),
+OrderedSet::OrderedSet(int* fromHere, size_t size) :
+	Set(fromHere, size),
 	m_start{ 0 }
 {
 }
@@ -61,14 +61,34 @@ Set Set::merge(const Set& set) const
 
 OrderedSet OrderedSet::getSmaller(int x) const
 {
-	return OrderedSet();
+	// Last index position of the array is size-1
+	size_t i = size()-1;
+	int toSubtract = 0;
+	
+	// Scan all indeces before 0 to prevent decrementing
+	// i below zero.
+	while (i > 0) {
+		if ((*this)[i] >= x) { toSubtract++; }
+		i--;
+	}
+	// Check position 0.
+	if ((*this)[0] >= x) { toSubtract++; }
+	return OrderedSet(begin(), size()-(toSubtract));
 }
 
+// Adjust pointer to array, m_start, m_size
 OrderedSet OrderedSet::getLarger(int x) const
 {
-	int i = 0;
-	while ((*this)[i] <= x) { i++; }
-	return OrderedSet(begin()+i, m_size-i);
+	size_t i = 0;
+	int toSubtract = 0;
+	while (i <= size()-1) {
+		if ((*this)[i] <= x) {
+			toSubtract++;
+		}
+		i++;
+	}
+	return OrderedSet(begin()+toSubtract, m_size-toSubtract);
+	// m_size-i : That many elements are left.
 }
 
 
