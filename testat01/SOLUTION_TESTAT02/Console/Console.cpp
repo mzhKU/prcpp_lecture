@@ -1,26 +1,88 @@
+
 #include <iostream>
+#include <string.h>
+#include <vector>
+
 #include "../MySet/MySet.h"
+#include "../MySet/OrderedSet.h"
 
-using namespace std;
-
-int main()
-{
-
-	// Test default constructor.
-	Set defaultSet{};
-	// Set capacityGivenSet{ 10 };
-	Set setUsingConversionConstructor{ { 1, 2, 3 } };
-
-
-	Set s1;
-	Set s11(s1);
-
-	// Set s2({1, 2, 3});
-
-	// Should be without size argument.
-	Set s2({ 1, 2, 3 });
-	
-	Set s21(s2);
-	Set s22 = s2;
+class MemoryBlock {
+public:
+	std::vector<int> memory;
+	MemoryBlock(initializer_list<int> vs) {
+		for (const auto& v : vs) {
+			memory.push_back(v);
+		}
+	}
+	void f(MemoryBlock&&);
+};
+void f(MemoryBlock& notConstantParameter) {
+	cout << "Not const parameter address = " << &notConstantParameter << endl;
+}
+void f(const MemoryBlock& constantParameter) {
+	cout << "Const parameter address     = " << &constantParameter << endl;
+}
+void MemoryBlock::f(MemoryBlock&& variableParameter) {
+	cout << "Variable parameter address  = " << &variableParameter << endl;
+	size_t memoryIndex = 0;
+	for (const auto& v : variableParameter.memory) {
+		// cout << v << endl;
+		if (v > 2) {
+			variableParameter.memory[memoryIndex] = v;
+			memoryIndex++;
+		}
+	}
 }
 
+int main() {
+
+	OrderedSet s1 = OrderedSet({ 1, 2, 3 });
+	OrderedSet s2 = OrderedSet({ 3, 4, 5 });
+	cout << "merged sets = " << s1.merge(s2) << endl;
+
+	/*
+	auto up = make_unique<int>();
+	shared_ptr<int> sp;
+
+
+	int emptyArrayWithSizeTwelveBytes[3];
+	cout << "sizeof(emptyArrayWithSizeTwelveBytes) = " << sizeof(emptyArrayWithSizeTwelveBytes) << endl;
+	emptyArrayWithSizeTwelveBytes[0] = 7;
+
+
+	Set one({ 7, 9, 10, 11,  2,  8 });
+	Set two({ 4, 6,  2,  3, 11, 10, 1 });
+	Set intersectionOneTwo({ 11, 2, 10 });
+
+	Set::intersection(one, std::move(two));
+	cout << "two = " << two << endl;
+
+
+
+	const MemoryBlock   memoryBlockConstant(      { 4, 5, 6 });
+	      MemoryBlock   memoryBlockNotConstant(   { 1, 2, 3 });
+		  MemoryBlock&& memoryBlockNamedRValueRef({ 1, 2, 3 }); // treated as lvalue
+
+	f(memoryBlockConstant);
+	f(memoryBlockNotConstant);
+	f(memoryBlockNamedRValueRef);
+	f(MemoryBlock({ 5, 6, 7 }));
+	
+	cout << "Before filter: " << endl;
+	for (auto& v : memoryBlockNotConstant.memory) { cout << v << ", "; cout << endl; }
+	
+	// cast of lvalue to rvalue
+	memoryBlockNotConstant.f(move(memoryBlockNotConstant));
+
+	cout << "After filter: ";
+	for (auto& v : memoryBlockNotConstant.memory) { cout << v << ", "; cout << endl; }
+
+	*/
+
+	// Set s(Set::difference(Set({ 1, 2, 3 }), Set({ 2, 3, 4 })));
+
+
+
+	
+	
+}

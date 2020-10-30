@@ -88,14 +88,10 @@ Set OrderedSet::merge(const Set& set) const
 			cout << "Merging two ordered sets." << endl;
 		}
 		/*
-		AB = Intersection(this, set)
-		lowerA = this.getSmaller(AB.begin())
-		higherB = set.getLarger(AB[AB.size()-1])
-
-		Merge = lowerA U AB U higherB
+		lowerA = this.getSmaller(B.begin())
+		Merge = lowerA U B
 		*/
-		OrderedSet result();
-
+		return getSmaller(*(os->begin())).merge(*os);
 	}
 	catch (bad_cast& e) {
 		// If we are here, the typecast was invalid
