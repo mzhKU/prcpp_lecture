@@ -10,8 +10,15 @@ int* OrderedSet::begin() const
 	return Set::begin() + m_start;
 }
 
+
 OrderedSet::OrderedSet() :
 	// Set(), <- implicit
+	m_start{ 0 }
+{
+}
+
+OrderedSet::OrderedSet(size_t capacity) :
+	Set::Set(capacity),
 	m_start{ 0 }
 {
 }
@@ -40,24 +47,6 @@ OrderedSet::~OrderedSet()
 {
 }
 
-/*
-Set Set::merge(const Set& set) const
-{
-	try {
-		const OrderedSet* os = dynamic_cast<const OrderedSet*>(&set);
-	}
-	catch (bad_cast& e) {
-		// If we are here, the typecast was valid
-		// and the provided set is an OrderedSet.
-		// TODO: merge
-		return OrderedSet();
-	}
-
-	// The dynamic typecast was not valid
-	// and so we return an ordinary set.
-	return Set::merge(set);
-}
-*/
 
 OrderedSet OrderedSet::getSmaller(int x) const
 {
@@ -91,4 +80,31 @@ OrderedSet OrderedSet::getLarger(int x) const
 	// m_size-i : That many elements are left.
 }
 
+Set OrderedSet::merge(const Set& set) const
+{
+	try {
+		const OrderedSet* os = dynamic_cast<const OrderedSet*>(&set);
+		if (os) {
+			cout << "Merging two ordered sets." << endl;
+		}
+		/*
+		AB = Intersection(this, set)
+		lowerA = this.getSmaller(AB.begin())
+		higherB = set.getLarger(AB[AB.size()-1])
 
+		Merge = lowerA U AB U higherB
+		*/
+		OrderedSet result();
+
+	}
+	catch (bad_cast& e) {
+		// If we are here, the typecast was invalid
+		// and the provided set is not an OrderedSet.
+		// TODO: merge
+		cout << "'set' argument is not ordered set." << endl;
+	}
+
+	// The dynamic typecast was not valid
+	// and so we return an ordinary set.
+	return Set::merge(set);
+}

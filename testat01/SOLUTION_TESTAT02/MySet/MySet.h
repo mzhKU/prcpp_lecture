@@ -22,7 +22,7 @@ protected:
 	int operator[](size_t i) const;
 	int& operator[](size_t i);
 	
-	Set merge(const Set& set) const;
+	virtual Set merge(const Set& set) const;
 	Set difference(const Set& set) const;
 	Set difference(Set&& set) const;
 	Set intersection(const Set& set) const;

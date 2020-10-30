@@ -21,7 +21,7 @@ Set::Set() :
 	cout << "Default constructor." << endl;
 }
 
-// Protected constructor. 'capacity': maximal size
+// Explicit constructor. 'capacity': maximal size
 Set::Set(size_t capacity) :
 	m_values{ make_unique<int[]>(capacity) },
 	m_size{ 0 },
@@ -125,7 +125,8 @@ size_t Set::size() const
 	return m_size;
 }
 
-Set Set::merge(const Set& set) const {
+Set Set::merge(const Set& set) const
+{
 	// Erstelle eine neue Menge mit allen Elementen von this.
 	Set result(m_size + set.m_size);
 	std::copy_n(begin(), m_size, result.begin());

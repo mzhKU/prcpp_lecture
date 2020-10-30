@@ -7,6 +7,9 @@ protected:
 	size_t m_start;
 
 	int* begin() const override;
+	Set merge(const Set& set) const override;
+
+	OrderedSet(size_t capacity);
 
 public:
 	// ------------------------------------------------------
@@ -30,7 +33,6 @@ public:
 
 	// ------------------------------------------------------
 	// INSTANCE METHODS
-	// Set merge(const Set& set) const;
 	OrderedSet getSmaller(int x) const;
 	OrderedSet getLarger(int x) const;
 	// ------------------------------------------------------
