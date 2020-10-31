@@ -47,7 +47,6 @@ OrderedSet::~OrderedSet()
 {
 }
 
-
 OrderedSet OrderedSet::getSmaller(int x) const
 {
 	// Last index position of the array is size-1
@@ -62,7 +61,12 @@ OrderedSet OrderedSet::getSmaller(int x) const
 	}
 	// Check position 0.
 	if ((*this)[0] >= x) { toSubtract++; }
-	return OrderedSet(begin(), size()-(toSubtract));
+
+	
+	OrderedSet result(*this);
+	result.m_size = size() - toSubtract;
+	return result;
+	// return OrderedSet(begin(), size()-(toSubtract));
 }
 
 // Adjust pointer to array, m_start, m_size
@@ -84,21 +88,57 @@ Set OrderedSet::merge(const Set& set) const
 {
 	try {
 		const OrderedSet* os = dynamic_cast<const OrderedSet*>(&set);
+
+		if (size()     == 0) { return *os;   }
+		if (os->size() == 0) { return *this; }
+
 		if (os) {
 			cout << "Merging two ordered sets." << endl;
-		}
-		/*
-		lowerA = this.getSmaller(B.begin())
-		Merge = lowerA U B
-		*/
 
-		// [WIP] Missing some elements when A contains elements larger B
-		return Set::merge(getSmaller(*(os->begin())), *os);
+			// Initial index of first subarray
+			int i = 0;
+
+			// Initial index of second subarray
+			int j = 0;
+
+			int valueToPlaceInResult;
+			int iValue;
+			int jValue;
+
+			OrderedSet result(size() + os->size());
+
+			while (i < size() || j < os->size()) {
+				iValue = begin()[i];
+				jValue = os->begin()[j];
+
+				if (i < size() && j < os->size()) {
+					if (iValue <= jValue) {
+						valueToPlaceInResult = iValue;
+						i++;
+					}
+					if (iValue >= jValue) {
+						valueToPlaceInResult = jValue;
+						j++;
+					}
+				}
+				else if (j < os->size()) {
+					valueToPlaceInResult = jValue;
+					j++;
+				}
+				else if (i < size()) {
+					valueToPlaceInResult = iValue;
+					i++;
+				}
+
+				result[result.m_size] = valueToPlaceInResult;
+				result.m_size++;
+			}
+			return result;
+		}
 	}
 	catch (bad_cast& e) {
 		// If we are here, the typecast was invalid
 		// and the provided set is not an OrderedSet.
-		// TODO: merge
 		cout << "'set' argument is not ordered set." << endl;
 	}
 
