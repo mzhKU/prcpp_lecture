@@ -91,6 +91,8 @@ Set OrderedSet::merge(const Set& set) const
 		lowerA = this.getSmaller(B.begin())
 		Merge = lowerA U B
 		*/
+
+		// [WIP] Missing some elements when A contains elements larger B
 		return Set::merge(getSmaller(*(os->begin())), *os);
 	}
 	catch (bad_cast& e) {
