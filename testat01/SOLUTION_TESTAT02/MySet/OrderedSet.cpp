@@ -61,8 +61,6 @@ OrderedSet OrderedSet::getSmaller(int x) const
 	}
 	// Check position 0.
 	if ((*this)[0] >= x) { toSubtract++; }
-
-	
 	OrderedSet result(*this);
 	result.m_size = size() - toSubtract;
 	return result;
@@ -80,6 +78,13 @@ OrderedSet OrderedSet::getLarger(int x) const
 		}
 		i++;
 	}
+	/*
+	// Hmmm..
+	OrderedSet result(*this);
+	result.m_start = toSubtract;
+	result.m_size = m_size - toSubtract -1;
+	return result;
+	*/
 	return OrderedSet(begin()+toSubtract, m_size-toSubtract);
 	// m_size-i : That many elements are left.
 }
@@ -107,10 +112,10 @@ Set OrderedSet::merge(const Set& set) const
 
 			OrderedSet result(size() + os->size());
 
+			// https://www.geeksforgeeks.org/merge-sort/ & help from a friend
 			while (i < size() || j < os->size()) {
 				iValue = begin()[i];
 				jValue = os->begin()[j];
-
 				if (i < size() && j < os->size()) {
 					if (iValue <= jValue) {
 						valueToPlaceInResult = iValue;
@@ -129,7 +134,6 @@ Set OrderedSet::merge(const Set& set) const
 					valueToPlaceInResult = iValue;
 					i++;
 				}
-
 				result[result.m_size] = valueToPlaceInResult;
 				result.m_size++;
 			}
