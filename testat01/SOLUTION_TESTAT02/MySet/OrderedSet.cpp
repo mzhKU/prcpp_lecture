@@ -91,62 +91,53 @@ OrderedSet OrderedSet::getLarger(int x) const
 
 Set OrderedSet::merge(const Set& set) const
 {
-	try {
-		const OrderedSet* os = dynamic_cast<const OrderedSet*>(&set);
+	const OrderedSet* os = dynamic_cast<const OrderedSet*>(&set);
 
-		if (size()     == 0) { return *os;   }
-		if (os->size() == 0) { return *this; }
+	if (size() == 0) { return *os; }
+	if (os->size() == 0) { return *this; }
 
-		if (os) {
-			cout << "Merging two ordered sets." << endl;
+	if (os) {
+		cout << "Merging two ordered sets." << endl;
 
-			// Initial index of first subarray
-			int i = 0;
+		// Initial index of first subarray
+		int i = 0;
 
-			// Initial index of second subarray
-			int j = 0;
+		// Initial index of second subarray
+		int j = 0;
 
-			int valueToPlaceInResult;
-			int iValue;
-			int jValue;
+		int valueToPlaceInResult;
+		int iValue;
+		int jValue;
 
-			OrderedSet result(size() + os->size());
+		OrderedSet result(size() + os->size());
 
-			// https://www.geeksforgeeks.org/merge-sort/ & help from a friend
-			while (i < size() || j < os->size()) {
-				iValue = begin()[i];
-				jValue = os->begin()[j];
-				if (i < size() && j < os->size()) {
-					if (iValue <= jValue) {
-						valueToPlaceInResult = iValue;
-						i++;
-					}
-					if (iValue >= jValue) {
-						valueToPlaceInResult = jValue;
-						j++;
-					}
-				}
-				else if (j < os->size()) {
-					valueToPlaceInResult = jValue;
-					j++;
-				}
-				else if (i < size()) {
+		// https://www.geeksforgeeks.org/merge-sort/ & help from a friend
+		while (i < size() || j < os->size()) {
+			iValue = begin()[i];
+			jValue = os->begin()[j];
+			if (i < size() && j < os->size()) {
+				if (iValue <= jValue) {
 					valueToPlaceInResult = iValue;
 					i++;
 				}
-				result[result.m_size] = valueToPlaceInResult;
-				result.m_size++;
+				if (iValue >= jValue) {
+					valueToPlaceInResult = jValue;
+					j++;
+				}
 			}
-			return result;
+			else if (j < os->size()) {
+				valueToPlaceInResult = jValue;
+				j++;
+			}
+			else if (i < size()) {
+				valueToPlaceInResult = iValue;
+				i++;
+			}
+			result[result.m_size] = valueToPlaceInResult;
+			result.m_size++;
 		}
-	}
-	catch (bad_cast& e) {
-		// If we are here, the typecast was invalid
-		// and the provided set is not an OrderedSet.
-		cout << "'set' argument is not ordered set." << endl;
+		return result;
 	}
 
-	// The dynamic typecast was not valid
-	// and so we return an ordinary set.
 	return Set::merge(set);
 }

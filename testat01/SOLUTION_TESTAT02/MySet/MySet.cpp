@@ -107,7 +107,7 @@ bool Set::contains(int e) const
 		*/
 
 		/*
-		if (*(begin()+i) == e) {
+		if (*(begin()+i) == e) {	// <-- Alte Version
 			return true;
 		}
 		*/
@@ -164,13 +164,16 @@ Set Set::merge(const Set& set) const
 // 'this' is set2
 Set Set::difference(const Set& set) const
 {
-	cout << "Difference without move semantics." << endl;
-	size_t differenceCapacity = 0;
-	for (int i = 0; i < set.size(); i++) {
+	size_t differenceCapacity = m_size < set.m_size ? set.m_size : m_size;		// <-- Neue Version
+	
+	/*
+	for (int i = 0; i < set.size(); i++) {										// <-- Alte Version
 		if (!this->contains(*(set.begin() + i))) {
 			differenceCapacity++;
 		}
 	}
+	*/
+
 	Set difference(differenceCapacity);
 	size_t differenceIndex = 0;
 	for (int i = 0; i < set.size(); i++) {
@@ -186,13 +189,20 @@ Set Set::difference(const Set& set) const
 Set Set::intersection(const Set& set) const
 {
 	// 1) Figure out how big the result set must be
-	// 2) Find all elements in both sets and add to result.
-	int resultCapacity = 0;
-	for (int i = 0; i < size(); i++) {
+	int resultCapacity = m_size < set.m_size ? m_size : set.m_size;
+												// <-- Jetzt kann es aber sein, dass die 
+												//	   Intersection capacity grösser als
+												//     nötig sein wird. Ist das OK?
+
+	/*
+	for (int i = 0; i < size(); i++) {			// <-- Alte Version
 		if (set.contains(*(begin() + i))) {
 			resultCapacity++;
 		}
 	}
+	*/
+
+	// 2) Find all elements in both sets and add to result.
 	Set result(resultCapacity);
 	size_t resultIndex = 0;
 	for (int i = 0; i < size(); i++) {
