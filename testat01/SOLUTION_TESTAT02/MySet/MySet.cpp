@@ -97,9 +97,20 @@ bool Set::contains(int e) const
 {
 	int i = 0;
 	while(i < m_size) {
+		if (m_values[i] == e) {		// <-- Variante 1
+			return true;
+		}
+		/*
+		if ((*this)[i] == e) {		// <-- Variante 2 besser?
+			return true;
+		}
+		*/
+
+		/*
 		if (*(begin()+i) == e) {
 			return true;
 		}
+		*/
 		i++;
 	}
 	return false;
@@ -108,9 +119,16 @@ bool Set::contains(int e) const
 bool Set::containsAll(const Set& set) const
 {
 	for (int i = 0; i < set.size(); i++) {
+
+		if (!(this->contains(set[i]))) {
+			return false;
+		}
+
+		/*
 		if (!(this->contains(  *(set.begin()+i)))) {
 			return false;
 		}
+		*/
 	}
 	return true;
 }
