@@ -36,9 +36,19 @@ void MemoryBlock::f(MemoryBlock&& variableParameter) {
 
 int main() {
 
-	OrderedSet s1 = OrderedSet({ 1, 2, 3 });
-	OrderedSet s2 = OrderedSet({ 3, 4, 5 });
-	cout << "merged sets = " << s1.merge(s2) << endl;
+	OrderedSet s1({ 1,2,3,20,13,9 });
+	OrderedSet newSet = s1.getLarger(2);
+
+	if (newSet == s1.getLarger(2)) {
+		cout << "TRUE" << endl;
+	}
+	else {
+		cout << "FALSE" << endl;
+	}
+
+	cout << newSet << endl; // Should be {3, 9, 13, 20}
+
+
 
 	/*
 	auto up = make_unique<int>();

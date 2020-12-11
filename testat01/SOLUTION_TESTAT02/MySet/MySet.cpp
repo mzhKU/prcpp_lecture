@@ -54,6 +54,7 @@ Set::Set(const initializer_list<int>& vs) :
 	}
 }
 
+/*
 Set::Set(const int* fromHere, size_t size) :
 	Set(size)
 {
@@ -64,6 +65,7 @@ Set::Set(const int* fromHere, size_t size) :
 	}
 	cout << "ctor with size" << endl;
 }
+*/
 
 // Destructor
 Set::~Set() {

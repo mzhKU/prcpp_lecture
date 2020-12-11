@@ -25,7 +25,7 @@ OrderedSet::OrderedSet(size_t capacity) :
 
 OrderedSet::OrderedSet(const OrderedSet& s) :
 	Set::Set(s),
-	m_start{ 0 }
+	m_start{ s.m_start }
 {
 }
 
@@ -37,11 +37,13 @@ OrderedSet::OrderedSet(const initializer_list<int>& vs) :
 	std::sort(beg, beg + m_size);
 }
 
+/*
 OrderedSet::OrderedSet(int* fromHere, size_t size) :
 	Set(fromHere, size),
 	m_start{ 0 }
 {
 }
+*/
 
 OrderedSet::~OrderedSet()
 {
@@ -70,23 +72,15 @@ OrderedSet OrderedSet::getSmaller(int x) const
 // Adjust pointer to array, m_start, m_size
 OrderedSet OrderedSet::getLarger(int x) const
 {
-	size_t i = 0;
-	int toSubtract = 0;
-	while (i <= size()-1) {
-		if ((*this)[i] <= x) {
-			toSubtract++;
-		}
-		i++;
+	int start = 0;
+	while ((*this)[start] <= x) {
+		start++;
 	}
-	/*
-	// Hmmm..
-	OrderedSet result(*this);
-	result.m_start = toSubtract;
-	result.m_size = m_size - toSubtract -1;
-	return result;
-	*/
-	return OrderedSet(begin()+toSubtract, m_size-toSubtract);
-	// m_size-i : That many elements are left.
+	OrderedSet os(*this);
+ 	os.m_start = start;
+	os.m_size = this->m_size - start;
+	cout << "OS = " << os << endl;
+	return os;
 }
 
 Set OrderedSet::merge(const Set& set) const

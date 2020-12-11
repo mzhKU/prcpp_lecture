@@ -43,7 +43,7 @@ public:
 	Set(const initializer_list<int>& vs);
 
 	// For Larger/Smaller subsets
-	Set(const int* fromHere, size_t size);
+	// Set(const int* fromHere, size_t size);
 
 	// Destructor
 	~Set();
@@ -59,6 +59,8 @@ public:
 	size_t size() const;
 
 	bool operator==(const Set& set) const {
+		cout << *this << endl;
+		cout << set << endl;
 		return size() == set.size() && containsAll(set) && set.containsAll(*this);
 	}
 

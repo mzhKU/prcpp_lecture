@@ -4,7 +4,7 @@
 
 
 #include "../MySet/MySet.h"
-// #include "../MySet/OrderedSet.h"
+#include "../MySet/OrderedSet.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -124,13 +124,14 @@ namespace UnitTest
 			
 		}
 
-		/*
+		
 		TEST_METHOD(Union_Ordered) {
 			OrderedSet s1({ 3,2,1,1,2 });
 			OrderedSet s2({ 3,2,4 });
 			OrderedSet s3({ 1,2,3,4 });
 
 			Assert::IsTrue(Set::merge(OrderedSet({ 1,2 }), OrderedSet({ 3,4 })) == s3);
+			
 			Assert::IsTrue(Set::merge(s1, s2) == s3);
 			Assert::IsTrue(Set::merge(s1, OrderedSet()) == s1);
 			Assert::IsTrue(Set::merge(OrderedSet(), s1) == s1);
@@ -139,9 +140,9 @@ namespace UnitTest
 		TEST_METHOD(Combined) {
 			OrderedSet s1({ 5,4,3,2,1 });
 			OrderedSet s2 = s1.getLarger(2); // {3,4,5}
+			Assert::IsTrue(s2 == OrderedSet({ 3,4,5 }));
 			OrderedSet s3 = s1.getSmaller(4); // {1,2,3}
 
-			Assert::IsTrue(s2 == OrderedSet({ 3,4,5 }));
 			Assert::IsTrue(s2.getSmaller(2) == OrderedSet());
 			Assert::IsTrue(s2.getSmaller(3) == OrderedSet());
 			Assert::IsTrue(s2.getSmaller(4) == OrderedSet({ 3 }));
@@ -160,7 +161,6 @@ namespace UnitTest
 			Assert::IsTrue(Set::merge(OrderedSet({ 5,4 }), s3) == s1);
 			Assert::IsTrue(Set::merge(s2, s3) == s1);
 			Assert::IsTrue(Set::merge(s3, s2) == s1);
-
 		}
 
 		TEST_METHOD(Smaller) {
@@ -190,6 +190,7 @@ namespace UnitTest
 			OrderedSet s2 = s1.getLarger(3);
 
 			Assert::IsTrue(s1.getLarger(2) == OrderedSet({ 3,9,13,20 }));
+			/*
 			Assert::IsTrue(s1.getLarger(3) == OrderedSet({ 9,13,20 }));
 			Assert::IsTrue(s1.getLarger(100) == OrderedSet());
 			Assert::IsTrue(s1.getLarger(20) == OrderedSet());
@@ -203,7 +204,8 @@ namespace UnitTest
 			Assert::IsTrue(s2.getLarger(13) == OrderedSet({ 20 }));
 			Assert::IsTrue(s2.getLarger(20) == OrderedSet());
 			Assert::IsTrue(s2.getLarger(21) == OrderedSet());
+			*/
 		}
-		*/
+		
 	};
 }
