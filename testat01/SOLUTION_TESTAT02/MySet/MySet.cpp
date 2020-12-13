@@ -99,14 +99,16 @@ bool Set::contains(int e) const
 {
 	int i = 0;
 	while(i < m_size) {
+		/*
 		if (m_values[i] == e) {		// <-- Variante 1
 			return true;
 		}
-		/*
+		*/
+		
 		if ((*this)[i] == e) {		// <-- Variante 2 besser?
 			return true;
 		}
-		*/
+		
 
 		/*
 		if (*(begin()+i) == e) {	// <-- Alte Version

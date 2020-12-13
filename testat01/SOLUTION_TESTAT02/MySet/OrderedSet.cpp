@@ -77,9 +77,9 @@ OrderedSet OrderedSet::getLarger(int x) const
 		start++;
 	}
 	OrderedSet os(*this);
- 	os.m_start = start;
+ 	os.m_start += start;
 	os.m_size = this->m_size - start;
-	cout << "OS = " << os << endl;
+	// cout << "OS = " << os << endl;
 	return os;
 }
 
