@@ -61,7 +61,18 @@ public:
 	bool operator==(const Set& set) const {
 		cout << *this << endl;
 		cout << set << endl;
-		return size() == set.size() && containsAll(set) && set.containsAll(*this);
+		if (size() == set.size()) {
+			if (containsAll(set)) {
+				if (set.containsAll(*this)) {
+					return true;
+				}
+				return false;
+			}
+			return false;
+		}
+		return false;
+
+		// return size() == set.size() && containsAll(set) && set.containsAll(*this);
 	}
 
 	// Ausgabe-Operator für Output-Streams (Inline-Implementation schon gegeben)
