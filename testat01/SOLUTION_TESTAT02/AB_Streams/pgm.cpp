@@ -90,7 +90,8 @@ bool PGM::writeBinary(const string& filename)
     // Write data
     for (auto& k : m_data) {
         cout << "k = " << k << endl;
-        ofs.write(reinterpret_cast<char*>(&k), sizeof(k));
+        // ofs.write(reinterpret_cast<char*>(&k), sizeof(k)); // <-- Official
+        ofs.write((char*)k, sizeof(k)); // <-- my solution
     }
     
 
