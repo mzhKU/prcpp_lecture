@@ -73,7 +73,8 @@ bool PGM::readASCII(const string& filename)
 
 bool PGM::writeBinary(const string& filename)
 {
-    ofstream ofs(filename, ios::binary | ios::out);
+    // ofstream ofs(filename, ios::binary | ios::out);
+    ofstream ofs(filename, ofstream::binary);
 
     if (!ofs.good()) {
         cerr << "Something went wrong with opening the file. Closing." << endl;
@@ -86,15 +87,14 @@ bool PGM::writeBinary(const string& filename)
     ofs << m_width << " " << m_height << endl;
     ofs << m_maxValue << endl;
 
-
     // Write data
     for (auto& k : m_data) {
         cout << "k = " << k << endl;
         // ofs.write(reinterpret_cast<char*>(&k), sizeof(k)); // <-- Official
-        ofs.write((char*)k, sizeof(k)); // <-- my solution
+        // ofs.write((char*)k, sizeof(k)); // <-- previous
+        ofs.write((char*)&k, sizeof(k));   // <-- With additional address operator
     }
     
-
     ofs.close();
     return true;
 }
