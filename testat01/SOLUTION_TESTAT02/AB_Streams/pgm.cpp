@@ -93,6 +93,7 @@ bool PGM::writeBinary(const string& filename)
         // ofs.write(reinterpret_cast<char*>(&k), sizeof(k)); // <-- Official
         // ofs.write((char*)k, sizeof(k)); // <-- previous
         ofs.write((char*)&k, sizeof(k));   // <-- With additional address operator
+    
     }
     
     ofs.close();
