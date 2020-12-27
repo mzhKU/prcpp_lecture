@@ -42,11 +42,18 @@ Auto::Auto(std::string brand, const char* m) : brand{ brand }, constructionYear{
 }
 
 // Copy constructor
-Auto::Auto(const Auto &templateCar) : brand{ templateCar.brand+"_copy" }, constructionYear{ templateCar.constructionYear }, thisCarsPS{ templateCar.thisCarsPS } {
+Auto::Auto(const Auto &templateCar) :	constructionYear{ templateCar.constructionYear },
+										thisCarsPS{       templateCar.thisCarsPS       },
+										brand{            templateCar.brand + "_copy"  }
+{
 	size_t neededBytes = strlen(templateCar.model) + 1;
 	model = new char[neededBytes];
 	strcpy_s(model, neededBytes, templateCar.model);
 	carCounter++;
+}
+
+Auto::Auto(std::initializer_list<char> vals) : constructionYear{ 99 } {
+	std::cout << "Initializer list sizeof(vals) = " << sizeof(vals) << std::endl;
 }
 // ----------------------------------------------------------
 
@@ -95,8 +102,8 @@ void Auto::showAddressOfThisCar() {
 const std::string Auto::getCarType() const {
 	return brand;
 }
-void Auto::setCarType(std::string brand) {
-	brand = brand;
+void Auto::setCarType(const std::string& b) {
+	brand = b;
 }
 
 unsigned int Auto::getPS() const {

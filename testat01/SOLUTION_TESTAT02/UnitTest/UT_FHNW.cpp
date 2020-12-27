@@ -190,21 +190,22 @@ namespace UnitTest
 			OrderedSet s2 = s1.getLarger(3);
 
 			Assert::IsTrue(s1.getLarger(2) == OrderedSet({ 3,9,13,20 }));
-			/*
 			Assert::IsTrue(s1.getLarger(3) == OrderedSet({ 9,13,20 }));
-			Assert::IsTrue(s1.getLarger(100) == OrderedSet());
-			Assert::IsTrue(s1.getLarger(20) == OrderedSet());
-			Assert::IsTrue(s1.getLarger(13) == OrderedSet({ 20 }));
-			Assert::IsTrue(s1.getLarger(1) == OrderedSet({ 2,3,20,13,9 }));
-			Assert::IsTrue(s1.getLarger(0) == s1);
+			// Assert::IsTrue(s1.getLarger(100) == OrderedSet());
+			
+			// Assert::IsTrue(s1.getLarger(20) == OrderedSet());
+			
+			// Assert::IsTrue(s1.getLarger(13) == OrderedSet({ 20 }));
+			// Assert::IsTrue(s1.getLarger(1) == OrderedSet({ 2,3,20,13,9 }));
+			// Assert::IsTrue(s1.getLarger(0) == s1);
 
-			Assert::IsTrue(s2 == OrderedSet({ 9,13,20 }));
-			Assert::IsTrue(s2.getLarger(3) == OrderedSet({ 9,13,20 }));
-			Assert::IsTrue(s2.getLarger(10) == OrderedSet({ 13,20 }));
-			Assert::IsTrue(s2.getLarger(13) == OrderedSet({ 20 }));
-			Assert::IsTrue(s2.getLarger(20) == OrderedSet());
-			Assert::IsTrue(s2.getLarger(21) == OrderedSet());
-			*/
+			// Assert::IsTrue(s2 == OrderedSet({ 9,13,20 }));
+			// Assert::IsTrue(s2.getLarger(3) == OrderedSet({ 9,13,20 }));
+			// Assert::IsTrue(s2.getLarger(10) == OrderedSet({ 13,20 }));
+			// Assert::IsTrue(s2.getLarger(13) == OrderedSet({ 20 }));
+			// Assert::IsTrue(s2.getLarger(20) == OrderedSet());
+			// Assert::IsTrue(s2.getLarger(21) == OrderedSet());
+			
 		}
 		
 	};

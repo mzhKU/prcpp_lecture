@@ -1,6 +1,16 @@
 #pragma once
 
 #include <iostream>
+using namespace std;
+class Point {
+	int m_x, m_y;
+public:
+	Point(int x = 0, int y = 0) : m_x{ x }, m_y{ y } {}
+
+	void print() const {
+		cout << "(" << m_x << ", " << m_y << ")" << endl;
+	}
+};
 
 
 struct Object;
@@ -19,5 +29,3 @@ struct Object {
 };
 
 
-
-void unique_test();

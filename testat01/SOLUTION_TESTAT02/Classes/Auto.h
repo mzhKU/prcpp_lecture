@@ -1,4 +1,5 @@
 #include <string>
+#include<initializer_list>
 
 // Comment to use explicit constructor.
 #define useConversionConstructor
@@ -25,11 +26,12 @@ public:
 	// ----------------------------------------------------------
 	Auto();
 
-	// Explicit and conversion constructors.
+	// Conversion constructors
     #ifdef CHAR_CONVERSION_CONST
 	Auto(const char*);
     #endif
 
+	// Explicit constructor
     #ifdef CHAR_EXPLICIT_CONST
 	explicit Auto(const char*);
     #endif
@@ -38,6 +40,9 @@ public:
 
 	// Copy constructor declaration.
 	Auto(const Auto&);
+
+	// Multiple arguments
+	Auto(std::initializer_list<char> vals);
 	// ----------------------------------------------------------
 
 
@@ -60,7 +65,7 @@ public:
 	unsigned int getNumberOfCars();
 	void showAddressOfThisCar();
 
-	void setCarType(std::string brand);
+	void setCarType(const std::string& brand);
 	void setPS(unsigned int ps);
 
 	const std::string getCarType() const;

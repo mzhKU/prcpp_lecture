@@ -88,13 +88,14 @@ bool PGM::writeBinary(const string& filename)
     ofs << m_maxValue << endl;
 
     // Write data
-    for (auto& k : m_data) {
+    for (auto k : m_data) {
         cout << "k = " << k << endl;
-        // ofs.write(reinterpret_cast<char*>(&k), sizeof(k)); // <-- Official
-        // ofs.write((char*)k, sizeof(k)); // <-- previous
-        ofs.write((char*)&k, sizeof(k));   // <-- With additional address operator
-    
+        // ofs.write(reinterpret_cast<char*>(&k), sizeof(k));   // <-- Official
+        ofs.write((char*)&k, sizeof(k));                        // <-- With address operator
     }
+
+    // Unsigned char
+    // cout << "typeid(m_data[0]) = " << typeid(m_data[0]).name() << endl;
     
     ofs.close();
     return true;
