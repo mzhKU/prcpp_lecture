@@ -30,6 +30,8 @@ public:
 		}
 	}
 
+	// "friend": Ist keine Instanzmethode, somit gibt es kein "this" Objekt,
+	//           Zugriff auf private Members (Attribute + Methoden).
 	friend std::ostream& operator<<(std::ostream& os, const Vector& v) {
 		os << '[';
 		if (v.size() > 0) { os << v[0]; }
@@ -56,4 +58,18 @@ public:
 		}
 		return true;
 	}
+
+	using arr_t = T[S];
+	operator arr_t() const {
+		return m_data;
+	}
+	
+	friend typename T sum(T vs, size_t from = 0, size_t to = S) {
+		T result = 0;
+		for (size_t i = from; i < to; i++) {
+			result += vs[i];
+		}
+		return result;
+	}
+	
 };

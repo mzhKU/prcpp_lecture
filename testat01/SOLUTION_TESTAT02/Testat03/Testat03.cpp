@@ -15,7 +15,10 @@ int main()
 	V4 B({ 2, 1, 0, 1 });
 
 	auto e = (2.0 * (A - B) / 2.0 + B + 5.0) * (A - 4.0 + 4.0 * B) / 4.0;
-	cout << "e = " << e;
+	cout << "e = " << e << endl;
+
+	double d = sum(A, 1, 3);
+	cout << "d = " << d << endl;
 
 	/*
 	Vector<double, 4> D;
