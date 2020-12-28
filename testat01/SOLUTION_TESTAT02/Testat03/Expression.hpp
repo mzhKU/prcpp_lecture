@@ -4,6 +4,8 @@
 #include "Multiply.hpp"
 #include "Divide.hpp"
 
+using namespace std;
+
 template<typename Left, typename Op, typename Right>
 class Expression {
 	const Left&  m_left;
@@ -41,6 +43,29 @@ public:
 		}
 		return true;
 	}
+
+	friend value_type sum(Expression e, size_t from, size_t to) {
+		value_type result = helper(e, from, to);
+		return result;
+	}
+
+	friend value_type sum(Expression e, size_t from) {
+		value_type result = helper(e, from, e.size());
+		return result;
+	}
+
+	friend value_type sum(Expression e) {
+		value_type result = helper(e, 0, e.size());
+		return result;
+	}
+
+	static value_type helper(Expression e, size_t from, size_t to) {
+		value_type tmp = 0;
+		for (size_t i = from; i < to; i++) {
+			tmp += e[i];
+		}
+		return tmp;
+	}
 };
 
 
@@ -51,7 +76,7 @@ class Expression<typename Right::value_type, Op, Right> {
 	const Right& m_right;
 public:
 
-	// The expression value type is given by type of Right.
+	// The expression value type is given by Right::value_type.
 	using value_type = typename Right::value_type;
 
 	Expression(const value_type& l, const Right& r) : m_left{ l }, m_right { r }
@@ -82,6 +107,29 @@ public:
 			}
 		}
 		return true;
+	}
+
+	friend value_type sum(Expression e, size_t from, size_t to) {
+		value_type result = helper(e, from, to);
+		return result;
+	}
+
+	friend value_type sum(Expression e, size_t from) {
+		value_type result = helper(e, from, e.size());
+		return result;
+	}
+
+	friend value_type sum(Expression e) {
+		value_type result = helper(e, 0, e.size());
+		return result;
+	}
+
+	static value_type helper(Expression e, size_t from, size_t to) {
+		value_type tmp = 0;
+		for (size_t i = from; i < to; i++) {
+			tmp += e[i];
+		}
+		return tmp;
 	}
 };
 
@@ -124,6 +172,29 @@ public:
 			}
 		}
 		return true;
+	}
+
+	friend value_type sum(Expression e, size_t from, size_t to) {
+		value_type result = helper(e, from, to);
+		return result;
+	}
+
+	friend value_type sum(Expression e, size_t from) {
+		value_type result = helper(e, from, e.size());
+		return result;
+	}
+
+	friend value_type sum(Expression e) {
+		value_type result = helper(e, 0, e.size());
+		return result;
+	}
+
+	static value_type helper(Expression e, size_t from, size_t to) {
+		value_type tmp = 0;
+		for (size_t i = from; i < to; i++) {
+			tmp += e[i];
+		}
+		return tmp;
 	}
 };
 

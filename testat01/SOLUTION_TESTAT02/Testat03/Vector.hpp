@@ -66,12 +66,4 @@ public:
 		}
 		return result;
 	}
-
-
-	/*
-	using arr_t = T[S];
-	operator arr_t() const {
-		return m_data;
-	}
-	*/
 };
