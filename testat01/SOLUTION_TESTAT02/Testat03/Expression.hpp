@@ -33,6 +33,7 @@ public:
 
 	template<typename E>
 	bool operator==(const E& e) {
+		if (m_left.size() != m_right.size()) { return false; }
 		for (int i = 0; i < e.size(); i++) {
 			if ((*this)[i] != e[i]) {
 				return false;

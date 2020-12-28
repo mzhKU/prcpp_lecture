@@ -17,7 +17,8 @@ int main()
 	auto e = (2.0 * (A - B) / 2.0 + B + 5.0) * (A - 4.0 + 4.0 * B) / 4.0;
 	cout << "e = " << e << endl;
 
-	double d = sum(A, 1, 3);
+	double d = sum(A);
+	// double d = sum(A, 1, 3);
 	cout << "d = " << d << endl;
 
 	/*

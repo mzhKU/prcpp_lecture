@@ -59,17 +59,19 @@ public:
 		return true;
 	}
 
+	friend T sum(Vector<T, S> v) {
+		T result = 0;
+		for (size_t i = 0; i < S; i++) {
+			result += v[i];
+		}
+		return result;
+	}
+
+
+	/*
 	using arr_t = T[S];
 	operator arr_t() const {
 		return m_data;
 	}
-	
-	friend typename T sum(T vs, size_t from = 0, size_t to = S) {
-		T result = 0;
-		for (size_t i = from; i < to; i++) {
-			result += vs[i];
-		}
-		return result;
-	}
-	
+	*/
 };

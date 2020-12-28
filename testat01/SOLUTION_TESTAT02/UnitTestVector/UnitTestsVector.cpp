@@ -7,10 +7,10 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 #define AUFGABE1
-
-/*
 #define AUFGABE2
 #define AUFGABE3
+
+/*
 #define AUFGABE4
 #define AUFGABE4_1
 */
@@ -45,7 +45,6 @@ public:
 
 		Assert::IsTrue(C - A == B);
 		Assert::IsTrue(A[1] == (C - B)[1]);
-		
 	}
 
 	// Aufgabe 1
