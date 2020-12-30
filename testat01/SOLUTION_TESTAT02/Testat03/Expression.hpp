@@ -40,29 +40,6 @@ public:
 		}
 		return true;
 	}
-
-	friend value_type sum(Expression e, size_t from, size_t to) {
-		value_type result = helper(e, from, to);
-		return result;
-	}
-
-	friend value_type sum(Expression e, size_t from) {
-		value_type result = helper(e, from, e.size());
-		return result;
-	}
-
-	friend value_type sum(Expression e) {
-		value_type result = helper(e, 0, e.size());
-		return result;
-	}
-
-	static value_type helper(Expression e, size_t from, size_t to) {
-		value_type tmp = 0;
-		for (size_t i = from; i < to; i++) {
-			tmp += e[i];
-		}
-		return tmp;
-	}
 };
 
 
@@ -104,29 +81,6 @@ public:
 			}
 		}
 		return true;
-	}
-
-	friend value_type sum(Expression e, size_t from, size_t to) {
-		value_type result = helper(e, from, to);
-		return result;
-	}
-
-	friend value_type sum(Expression e, size_t from) {
-		value_type result = helper(e, from, e.size());
-		return result;
-	}
-
-	friend value_type sum(Expression e) {
-		value_type result = helper(e, 0, e.size());
-		return result;
-	}
-
-	static value_type helper(Expression e, size_t from, size_t to) {
-		value_type tmp = 0;
-		for (size_t i = from; i < to; i++) {
-			tmp += e[i];
-		}
-		return tmp;
 	}
 };
 
@@ -170,31 +124,38 @@ public:
 		}
 		return true;
 	}
-
-	friend value_type sum(Expression e, size_t from, size_t to) {
-		value_type result = helper(e, from, to);
-		return result;
-	}
-
-	friend value_type sum(Expression e, size_t from) {
-		value_type result = helper(e, from, e.size());
-		return result;
-	}
-
-	friend value_type sum(Expression e) {
-		value_type result = helper(e, 0, e.size());
-		return result;
-	}
-
-	static value_type helper(Expression e, size_t from, size_t to) {
-		value_type tmp = 0;
-		for (size_t i = from; i < to; i++) {
-			tmp += e[i];
-		}
-		return tmp;
-	}
 };
 
+template<typename Expression>
+typename Expression::value_type sum(const Expression& e, size_t from, size_t to) {
+	using value_type = typename Expression::value_type;
+	value_type result = helper(e, from, to);
+	return result;
+}
+
+template<typename Expression>
+typename Expression::value_type sum(const Expression& e, size_t from) {
+	using value_type = typename Expression::value_type;
+	value_type result = helper(e, from, e.size());
+	return result;
+}
+
+template<typename Expression>
+typename Expression::value_type sum(const Expression& e) {
+	using value_type = typename Expression::value_type;
+	value_type result = helper(e, 0, e.size());
+	return result;
+}
+
+template<typename Expression>
+typename Expression::value_type helper(const Expression& e, size_t from, size_t to) {
+	using value_type = typename Expression::value_type;
+	value_type tmp = 0;
+	for (size_t i = from; i < to; i++) {
+		tmp += e[i];
+	}
+	return tmp;
+}
 
 template<typename Left, typename Right>
 Expression<Left, Add, Right> operator+(const Left& l, const Right& r) {

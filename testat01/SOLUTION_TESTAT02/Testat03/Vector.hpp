@@ -59,7 +59,7 @@ public:
 		return true;
 	}
 
-	friend T sum(Vector<T, S> v, size_t from=0, size_t to=S) {
+	friend T sum(const Vector<T, S>& v, size_t from=0, size_t to=S) {
 		T result = 0;
 		for (size_t i = from; i < to; i++) {
 			result += v[i];
