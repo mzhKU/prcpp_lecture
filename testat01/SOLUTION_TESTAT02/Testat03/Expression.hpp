@@ -1,8 +1,5 @@
 #pragma once
-#include "Add.hpp"
-#include "Subtract.hpp"
-#include "Multiply.hpp"
-#include "Divide.hpp"
+#include "Operations.hpp"
 
 using namespace std;
 

@@ -14,6 +14,12 @@ int main()
 	V5 A({ 1, 2, 3, 4, 5 });
 	cout << sum(2.0*A, 1) << endl;
 
+	
+	using VI5 = Vector<int, 3>;
+	
+	VI5 B({ 1, 2, 3 });
+	cout << sum(2 * B) << endl;
+	
 
 
 	/*
