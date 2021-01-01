@@ -37,18 +37,15 @@ void MemoryBlock::f(MemoryBlock&& variableParameter) {
 int main() {
 
 	OrderedSet s1({ 1,2,3,20,13,9 });
-	OrderedSet newSet = s1.getLarger(2);
+	OrderedSet s2 = s1.getLarger(3);
 
-	if (newSet == s1.getLarger(2)) {
-		cout << "TRUE" << endl;
-	}
-	else {
-		cout << "FALSE" << endl;
-	}
+	cout << s2 << endl;					// {9, 13, 20}
+	cout << s2.getLarger(3) << endl;	// {1, 2, 3}
 
-	cout << newSet << endl; // Should be {3, 9, 13, 20}
-
-
+	/*
+	OrderedSet s3 = s2.getLarger(3); // OrderedSet({ 9,13,20 })
+	cout << s3 << endl;
+	*/
 
 	/*
 	auto up = make_unique<int>();
@@ -90,9 +87,4 @@ int main() {
 	*/
 
 	// Set s(Set::difference(Set({ 1, 2, 3 }), Set({ 2, 3, 4 })));
-
-
-
-	
-	
 }

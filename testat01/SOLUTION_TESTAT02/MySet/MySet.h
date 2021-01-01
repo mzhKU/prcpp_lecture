@@ -42,9 +42,6 @@ public:
 	// Type conversion constructor
 	Set(const initializer_list<int>& vs);
 
-	// For Larger/Smaller subsets
-	// Set(const int* fromHere, size_t size);
-
 	// Destructor
 	~Set();
 	// ------------------------------------------------------
@@ -71,8 +68,6 @@ public:
 			return false;
 		}
 		return false;
-
-		// return size() == set.size() && containsAll(set) && set.containsAll(*this);
 	}
 
 	// Ausgabe-Operator für Output-Streams (Inline-Implementation schon gegeben)

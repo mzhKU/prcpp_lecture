@@ -54,19 +54,6 @@ Set::Set(const initializer_list<int>& vs) :
 	}
 }
 
-/*
-Set::Set(const int* fromHere, size_t size) :
-	Set(size)
-{
-	for (auto i = 0; i < size; i++) {
-		if (!contains(fromHere[i])) {
-			m_values[m_size++] = fromHere[i];
-		}
-	}
-	cout << "ctor with size" << endl;
-}
-*/
-
 // Destructor
 Set::~Set() {
 	cout << "Clearing object." << endl;
@@ -99,22 +86,9 @@ bool Set::contains(int e) const
 {
 	int i = 0;
 	while(i < m_size) {
-		/*
-		if (m_values[i] == e) {		// <-- Variante 1
+		if ((*this)[i] == e) {
 			return true;
 		}
-		*/
-		
-		if ((*this)[i] == e) {		// <-- Variante 2 besser?
-			return true;
-		}
-		
-
-		/*
-		if (*(begin()+i) == e) {	// <-- Alte Version
-			return true;
-		}
-		*/
 		i++;
 	}
 	return false;
@@ -127,12 +101,6 @@ bool Set::containsAll(const Set& set) const
 		if (!(this->contains(set[i]))) {
 			return false;
 		}
-
-		/*
-		if (!(this->contains(  *(set.begin()+i)))) {
-			return false;
-		}
-		*/
 	}
 	return true;
 }
@@ -170,14 +138,6 @@ Set Set::difference(const Set& set) const
 {
 	size_t differenceCapacity = m_size < set.m_size ? set.m_size : m_size;		// <-- Neue Version
 	
-	/*
-	for (int i = 0; i < set.size(); i++) {										// <-- Alte Version
-		if (!this->contains(*(set.begin() + i))) {
-			differenceCapacity++;
-		}
-	}
-	*/
-
 	Set difference(differenceCapacity);
 	size_t differenceIndex = 0;
 	for (int i = 0; i < set.size(); i++) {
@@ -197,14 +157,6 @@ Set Set::intersection(const Set& set) const
 												// <-- Jetzt kann es aber sein, dass die 
 												//	   Intersection capacity grösser als
 												//     nötig sein wird. Ist das OK?
-
-	/*
-	for (int i = 0; i < size(); i++) {			// <-- Alte Version
-		if (set.contains(*(begin() + i))) {
-			resultCapacity++;
-		}
-	}
-	*/
 
 	// 2) Find all elements in both sets and add to result.
 	Set result(resultCapacity);

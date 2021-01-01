@@ -10,84 +10,51 @@ int* OrderedSet::begin() const
 	return Set::begin() + m_start;
 }
 
-
 OrderedSet::OrderedSet() :
 	// Set(), <- implicit
 	m_start{ 0 }
 {
 }
 
-OrderedSet::OrderedSet(size_t capacity) :
-	Set::Set(capacity),
-	m_start{ 0 }
-{
+OrderedSet::OrderedSet(size_t capacity) : Set::Set(capacity), m_start{ 0 } {
 }
 
-OrderedSet::OrderedSet(const OrderedSet& s) :
-	Set::Set(s),
-	m_start{ s.m_start }
-{
+OrderedSet::OrderedSet(const OrderedSet& s) : Set::Set(s), m_start{ s.m_start } {
 }
 
-OrderedSet::OrderedSet(const initializer_list<int>& vs) :
-	Set::Set(vs),
-	m_start{ 0 }
-{
+OrderedSet::OrderedSet(const initializer_list<int>& vs) : Set::Set(vs), m_start{ 0 } {
 	int* beg = begin();
 	std::sort(beg, beg + m_size);
 }
 
-/*
-OrderedSet::OrderedSet(int* fromHere, size_t size) :
-	Set(fromHere, size),
-	m_start{ 0 }
-{
-}
-*/
+OrderedSet::~OrderedSet() {}
 
-OrderedSet::~OrderedSet()
-{
-}
-
-OrderedSet OrderedSet::getSmaller(int x) const
-{
-	// Last index position of the array is size-1
-	size_t i = size()-1;
-	int toSubtract = 0;
-	
-	// Scan all indeces before 0 to prevent decrementing
-	// i below zero.
-	while (i > 0) {
-		if ((*this)[i] >= x) { toSubtract++; }
-		i--;
+OrderedSet OrderedSet::getSmaller(int x) const {
+	for (size_t i = 0; i < size(); i++) {
+		if ((*this)[i] > x) {
+			OrderedSet os(*this);
+			os.m_start = 0;
+			os.m_size = i - 1;
+			return os;
+		}
 	}
-	// Check position 0.
-	if ((*this)[0] >= x) { toSubtract++; }
-	OrderedSet result(*this);
-	result.m_size = size() - toSubtract;
-	return result;
-	// return OrderedSet(begin(), size()-(toSubtract));
+	return OrderedSet();
 }
 
 // Adjust pointer to array, m_start, m_size
-OrderedSet OrderedSet::getLarger(int x) const
-{
-	int start = 0;
-	while ((*this)[start] <= x) {
-		start++;
+OrderedSet OrderedSet::getLarger(int x) const {
+	for (size_t i = 0; i < (*this).size(); i++) {
+		if ((*this)[i] > x) {
+			OrderedSet os(*this);
+			os.m_start = i;
+			os.m_size = m_size - i;
+			return os;
+		}
 	}
-	OrderedSet os(*this);
-	cout << "OS.M_START = " << os.m_start << endl;
-	cout << "OS.M_START = START : " << start << endl;
- 	os.m_start += start;
-	cout << "OS.M_START = " << os.m_start << endl;
-	os.m_size = this->m_size - start;
-	// cout << "OS = " << os << endl;
-	return os;
+	return OrderedSet();
 }
 
-Set OrderedSet::merge(const Set& set) const
-{
+Set OrderedSet::merge(const Set& set) const {
 	const OrderedSet* os = dynamic_cast<const OrderedSet*>(&set);
 
 	if (size() == 0) { return *os; }
