@@ -30,23 +30,22 @@ OrderedSet::OrderedSet(const initializer_list<int>& vs) : Set::Set(vs), m_start{
 OrderedSet::~OrderedSet() {}
 
 OrderedSet OrderedSet::getSmaller(int x) const {
-	for (size_t i = 0; i < size(); i++) {
-		if ((*this)[i] > x) {
+	for (int64_t i = size()-1; i >= 0; i--) {
+		if ((*this)[i] < x) {
 			OrderedSet os(*this);
-			os.m_start = 0;
-			os.m_size = i - 1;
+			os.m_start = m_start;
+			os.m_size -= (size()-(i+1));
 			return os;
 		}
 	}
 	return OrderedSet();
 }
 
-// Adjust pointer to array, m_start, m_size
 OrderedSet OrderedSet::getLarger(int x) const {
 	for (size_t i = 0; i < (*this).size(); i++) {
 		if ((*this)[i] > x) {
 			OrderedSet os(*this);
-			os.m_start = i;
+			os.m_start += i;
 			os.m_size = m_size - i;
 			return os;
 		}
